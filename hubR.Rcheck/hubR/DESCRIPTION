@@ -1,0 +1,22 @@
+Package: hubR
+Title: Build UCSC track hubs
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Nelson",
+           family = "Johansen",
+           role = c("aut", "cre"),
+           email = "nelson.johansen@alleninstitute.org")
+URL: https://github.com/
+Description: Takes a list of bigwig file names, Amazon S3 bucket info and generates a UCSC genome browser track hub along with neccessary hmac signatures.
+License: GPL-3
+Imports: openssl, digest, RCurl, RColorBrewer
+Suggests: knitr, rmarkdown, testthat
+Encoding: UTF-8
+VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+NeedsCompilation: no
+Packaged: 2022-01-07 20:50:03 UTC; nelson.johansen
+Author: Nelson Johansen [aut, cre]
+Maintainer: Nelson Johansen <nelson.johansen@alleninstitute.org>
+Built: R 4.1.1; ; 2022-01-07 20:57:20 UTC; unix

@@ -1,0 +1,183 @@
+\nonstopmode{}
+\documentclass[a4paper]{book}
+\usepackage[times,inconsolata,hyper]{Rd}
+\usepackage{makeidx}
+\usepackage[utf8]{inputenc} % @SET ENCODING@
+% \usepackage{graphicx} % @USE GRAPHICX@
+\makeindex{}
+\begin{document}
+\chapter*{}
+\begin{center}
+{\textbf{\huge Package `hubR'}}
+\par\bigskip{\large \today}
+\end{center}
+\inputencoding{utf8}
+\ifthenelse{\boolean{Rd@use@hyper}}{\hypersetup{pdftitle = {hubR: Build UCSC track hubs}}}{}\ifthenelse{\boolean{Rd@use@hyper}}{\hypersetup{pdfauthor = {Nelson Johansen}}}{}\begin{description}
+\raggedright{}
+\item[Title]\AsIs{Build UCSC track hubs}
+\item[Version]\AsIs{0.0.0.9000}
+\item[URL]\AsIs{}\url{https://github.com/}\AsIs{}
+\item[Description]\AsIs{Takes a list of bigwig file names, Amazon S3 bucket info and generates a UCSC genome browser track hub along with neccessary hmac signatures.}
+\item[License]\AsIs{GPL-3}
+\item[Imports]\AsIs{openssl, digest, RCurl, RColorBrewer}
+\item[Suggests]\AsIs{knitr, rmarkdown, testthat}
+\item[Encoding]\AsIs{UTF-8}
+\item[VignetteBuilder]\AsIs{knitr}
+\item[Roxygen]\AsIs{list(markdown = TRUE)}
+\item[RoxygenNote]\AsIs{7.1.2}
+\item[NeedsCompilation]\AsIs{no}
+\item[Author]\AsIs{Nelson Johansen [aut, cre]}
+\item[Maintainer]\AsIs{Nelson Johansen }\email{nelson.johansen@alleninstitute.org}\AsIs{}
+\end{description}
+\Rdcontents{\R{} topics documented:}
+\inputencoding{utf8}
+\HeaderA{create.signatures}{Computes HMAC signatures}{create.signatures}
+%
+\begin{Description}\relax
+This function takes in a vector of bigwig file names and Amazon S3 credentials to generate hmac signatures to access .bw files.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+create.signatures(track.dir, secret.key, bigwigs)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{track.dir}] Amazon S3 bucket name that stores the .bw files
+
+\item[\code{secret.key}] Amazon S3 secret access key
+
+\item[\code{bigwigs}] Bigwig file names which exactly match those in 'track.dir'
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{generate.track.hub}{Build multi-wig track hub}{generate.track.hub}
+%
+\begin{Description}\relax
+This function loads a file as a matrix. It assumes that the first column
+contains the rownames and the subsequent columns are the sample identifiers.
+Any rows with duplicated row names will be dropped with the first one being
+kepted.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+generate.track.hub(
+  hmac.encoded,
+  track.dir,
+  access.key,
+  bigwigs,
+  pseudo.names,
+  long.labels,
+  colors,
+  species,
+  region,
+  type,
+  cluster,
+  genome,
+  output.track.file,
+  email
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{hmac.encoded}] Bigwig file signatures computed with \code{create.signatures}
+
+\item[\code{track.dir}] Amazon S3 bucket name that stores the .bw files
+
+\item[\code{access.key}] Amazon S3 access key ID
+
+\item[\code{bigwigs}] Bigwig file names which exactly match those in 'track.dir'
+
+\item[\code{pseudo.names}] Short labels to give each track. If NULL the function attemps to gather from .bw file name: pseudo.names-*.bw
+
+\item[\code{long.labels}] Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: long.labels-*.bw
+
+\item[\code{colors}] Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.
+
+\item[\code{species}] Species information
+
+\item[\code{region}] Brain region information
+
+\item[\code{type}] Data type (ATAC, Multiome, etc.)
+
+\item[\code{cluster}] Cluster label information
+
+\item[\code{genome}] Genome information
+
+\item[\code{output.track.file}] Output track hub filename. Default: trackDB.txt
+
+\item[\code{email}] Correspondence email
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+A matrix of the infile
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{hubR}{Builds a track hub for the UCSC genome browser}{hubR}
+%
+\begin{Description}\relax
+This function takes in a vector of bigwig file names along associated metadata and Amazon S3 credentials.
+It assumes the user has created an S3 bucket 'track.dir' where the bigwig files will be accessible on S3.
+Any changes to the bigwig file names or 'track.dir' will require the regeneration of HMAC signatures and the hub file.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+hubR(
+  track.dir,
+  access.key,
+  secret.key,
+  bigwigs,
+  pseudo.names = NULL,
+  long.labels = NULL,
+  colors = NULL,
+  species,
+  region,
+  type,
+  cluster,
+  genome,
+  output.track.file = "trackDB.txt",
+  email = ""
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{track.dir}] Amazon S3 bucket name that stores the .bw files
+
+\item[\code{access.key}] Amazon S3 access key ID
+
+\item[\code{secret.key}] Amazon S3 secret access key
+
+\item[\code{bigwigs}] Bigwig file names which exactly match those in 'track.dir'
+
+\item[\code{pseudo.names}] Short labels to give each track. If NULL the function attemps to gather from .bw file name: pseudo.names-*.bw
+
+\item[\code{long.labels}] Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: long.labels-*.bw
+
+\item[\code{colors}] Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.
+
+\item[\code{species}] Species information
+
+\item[\code{region}] Brain region information
+
+\item[\code{type}] Data type (ATAC, Multiome, etc.)
+
+\item[\code{cluster}] Cluster label information
+
+\item[\code{genome}] Genome information
+
+\item[\code{output.track.file}] Output track hub filename. Default: trackDB.txt
+
+\item[\code{email}] Correspondence email
+\end{ldescription}
+\end{Arguments}
+\printindex{}
+\end{document}

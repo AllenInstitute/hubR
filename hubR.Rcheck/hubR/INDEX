@@ -1,0 +1,3 @@
+create.signatures       Computes HMAC signatures
+generate.track.hub      Build multi-wig track hub
+hubR                    Builds a track hub for the UCSC genome browser
