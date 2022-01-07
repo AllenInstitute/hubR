@@ -1,13 +1,13 @@
 #' Builds a track hub for the UCSC genome browser
 #'
 #' This function takes in a vector of bigwig file names along associated metadata and Amazon S3 credentials.
-#' It assumes the user has created an S3 bucket 'track.dir' where the bigwig files will be accessible on S3.
-#' Any changes to the bigwig file names or 'track.dir' will require the regeneration of HMAC signatures and the hub file.
+#' It assumes the user has created an S3 bucket 'track.bucket' where the bigwig files will be accessible on S3.
+#' Any changes to the bigwig file names or 'track.bucket' will require the regeneration of HMAC signatures and the hub file.
 #'
-#' @param track.dir Amazon S3 bucket name that stores the .bw files
+#' @param track.bucket Amazon S3 bucket name that stores the .bw files
 #' @param access.key Amazon S3 access key ID
 #' @param secret.key Amazon S3 secret access key
-#' @param bigwigs Bigwig file names which exactly match those in 'track.dir'
+#' @param bigwigs Bigwig file names which exactly match those in 'track.bucket'
 #' @param pseudo.names  Short labels to give each track. If NULL the function attemps to gather from .bw file name: pseudo.names-*.bw
 #' @param long.labels Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: long.labels-*.bw
 #' @param colors Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.
@@ -20,7 +20,7 @@
 #' @param email Correspondence email
 #'
 #' @export
-hubR = function(track.dir, access.key, secret.key,
+hubR = function(track.bucket, access.key, secret.key,
                 bigwigs, pseudo.names=NULL, long.labels=NULL, colors=NULL, 
                 species, region, type, cluster, genome,
                 output.track.file="trackDB.txt", email=""){
@@ -31,7 +31,7 @@ hubR = function(track.dir, access.key, secret.key,
     colors       = .argcheck.colors(colors, bigwigs)
 
     ## Compute hmac signatures using sha1
-    hmac.encoded = create.signatures(track.dir, secret.key, bigwigs)
+    hmac.encoded = create.signatures(track.bucket, secret.key, bigwigs)
 
     ## Write out the hub file
     generate.track.hub(output.track.file, 
@@ -44,15 +44,15 @@ hubR = function(track.dir, access.key, secret.key,
 #'
 #' This function takes in a vector of bigwig file names and Amazon S3 credentials to generate hmac signatures to access .bw files.
 #'
-#' @param track.dir Amazon S3 bucket name that stores the .bw files
+#' @param track.bucket Amazon S3 bucket name that stores the .bw files
 #' @param secret.key Amazon S3 secret access key
-#' @param bigwigs Bigwig file names which exactly match those in 'track.dir'
+#' @param bigwigs Bigwig file names which exactly match those in 'track.bucket'
 #'
 #' @export
-create.signatures = function(track.dir, secret.key, bigwigs){
+create.signatures = function(track.bucket, secret.key, bigwigs){
     ## URL encode takes the hmac string and converts '=' and other special characters to %-encoded characters
     ## Following original conventions with respect to sha1
-    hmac.encoded = sapply(bigwigs, function(x) URLencode(base64Encode(hmac(secret.key, paste0("GET\n\n\n2147483647\n/", track.dir, "-tracks/", x), "sha1", raw=TRUE)), reserved=TRUE))
+    hmac.encoded = sapply(bigwigs, function(x) URLencode(base64Encode(hmac(secret.key, paste0("GET\n\n\n2147483647\n/", track.bucket, "-tracks/", x), "sha1", raw=TRUE)), reserved=TRUE))
     return(hmac.encoded)
 }
 
@@ -64,9 +64,9 @@ create.signatures = function(track.dir, secret.key, bigwigs){
 #' kepted.
 #'
 #' @param hmac.encoded Bigwig file signatures computed with `create.signatures`
-#' @param track.dir Amazon S3 bucket name that stores the .bw files
+#' @param track.bucket Amazon S3 bucket name that stores the .bw files
 #' @param access.key Amazon S3 access key ID
-#' @param bigwigs Bigwig file names which exactly match those in 'track.dir'
+#' @param bigwigs Bigwig file names which exactly match those in 'track.bucket'
 #' @param pseudo.names  Short labels to give each track. If NULL the function attemps to gather from .bw file name: pseudo.names-*.bw
 #' @param long.labels Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: long.labels-*.bw
 #' @param colors Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.
@@ -81,7 +81,7 @@ create.signatures = function(track.dir, secret.key, bigwigs){
 #' @return A matrix of the infile
 #' @export
 generate.track.hub = function(hmac.encoded, 
-                                track.dir, access.key,
+                                track.bucket, access.key,
                                 bigwigs, pseudo.names, long.labels, colors,
                                 species, region, type, cluster, genome,
                                 output.track.file, email){
@@ -121,7 +121,7 @@ generate.track.hub = function(hmac.encoded,
     ## Track writing
     for(bw.itr in 1:length(bigwigs)){
         writeLines(paste0("\ttrack ", pseudo.names[bw.itr]), fileConnection)
-        writeLines(paste0("\tbigDataUrl https://s3-us-west-2.amazonaws.com/", track.dir, "-tracks/", bigwigs[bw.itr], "?AWSAccessKeyId=", access.key, "&Expires=2147483647&Signature=", hmac.encoded[bw.itr]), fileConnection)
+        writeLines(paste0("\tbigDataUrl https://s3-us-west-2.amazonaws.com/", track.bucket, "-tracks/", bigwigs[bw.itr], "?AWSAccessKeyId=", access.key, "&Expires=2147483647&Signature=", hmac.encoded[bw.itr]), fileConnection)
         writeLines(paste0("\tparent ", species, region, type, cluster), fileConnection)
         writeLines(paste0("\tshortLabel ", pseudo.names[bw.itr]), fileConnection)
         writeLines(paste0("\tlongLabel ", long.labels[bw.itr]), fileConnection)

@@ -6,7 +6,7 @@
 \usage{
 generate.track.hub(
   hmac.encoded,
-  track.dir,
+  track.bucket,
   access.key,
   bigwigs,
   pseudo.names,
@@ -24,11 +24,11 @@ generate.track.hub(
 \arguments{
 \item{hmac.encoded}{Bigwig file signatures computed with \code{create.signatures}}
 
-\item{track.dir}{Amazon S3 bucket name that stores the .bw files}
+\item{track.bucket}{Amazon S3 bucket name that stores the .bw files}
 
 \item{access.key}{Amazon S3 access key ID}
 
-\item{bigwigs}{Bigwig file names which exactly match those in 'track.dir'}
+\item{bigwigs}{Bigwig file names which exactly match those in 'track.bucket'}
 
 \item{pseudo.names}{Short labels to give each track. If NULL the function attemps to gather from .bw file name: pseudo.names-*.bw}
 

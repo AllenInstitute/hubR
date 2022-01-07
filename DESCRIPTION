@@ -12,6 +12,7 @@ License: GPL-3
 Imports: openssl,
     digest,
     RCurl,
+    aws.s3,
     RColorBrewer
 Suggests: knitr, 
     rmarkdown, 

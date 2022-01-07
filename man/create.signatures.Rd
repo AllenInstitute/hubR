@@ -4,14 +4,14 @@
 \alias{create.signatures}
 \title{Computes HMAC signatures}
 \usage{
-create.signatures(track.dir, secret.key, bigwigs)
+create.signatures(track.bucket, secret.key, bigwigs)
 }
 \arguments{
-\item{track.dir}{Amazon S3 bucket name that stores the .bw files}
+\item{track.bucket}{Amazon S3 bucket name that stores the .bw files}
 
 \item{secret.key}{Amazon S3 secret access key}
 
-\item{bigwigs}{Bigwig file names which exactly match those in 'track.dir'}
+\item{bigwigs}{Bigwig file names which exactly match those in 'track.bucket'}
 }
 \description{
 This function takes in a vector of bigwig file names and Amazon S3 credentials to generate hmac signatures to access .bw files.

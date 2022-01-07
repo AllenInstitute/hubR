@@ -5,7 +5,7 @@
 \title{Builds a track hub for the UCSC genome browser}
 \usage{
 hubR(
-  track.dir,
+  track.bucket,
   access.key,
   secret.key,
   bigwigs,
@@ -22,13 +22,13 @@ hubR(
 )
 }
 \arguments{
-\item{track.dir}{Amazon S3 bucket name that stores the .bw files}
+\item{track.bucket}{Amazon S3 bucket name that stores the .bw files}
 
 \item{access.key}{Amazon S3 access key ID}
 
 \item{secret.key}{Amazon S3 secret access key}
 
-\item{bigwigs}{Bigwig file names which exactly match those in 'track.dir'}
+\item{bigwigs}{Bigwig file names which exactly match those in 'track.bucket'}
 
 \item{pseudo.names}{Short labels to give each track. If NULL the function attemps to gather from .bw file name: pseudo.names-*.bw}
 
@@ -52,6 +52,6 @@ hubR(
 }
 \description{
 This function takes in a vector of bigwig file names along associated metadata and Amazon S3 credentials.
-It assumes the user has created an S3 bucket 'track.dir' where the bigwig files will be accessible on S3.
-Any changes to the bigwig file names or 'track.dir' will require the regeneration of HMAC signatures and the hub file.
+It assumes the user has created an S3 bucket 'track.bucket' where the bigwig files will be accessible on S3.
+Any changes to the bigwig file names or 'track.bucket' will require the regeneration of HMAC signatures and the hub file.
 }

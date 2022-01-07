@@ -1,7 +1,7 @@
 # hubR
 A tool to streamline the generate of UCSC browser hubs.
 
-## Example
+## Example: building a track hub
 ```
 library(hubR)
 
@@ -9,10 +9,10 @@ library(hubR)
 example.bigwigs = list.files("/allen/programs/celltypes/workgroups/hct/NelsonJ/hubR_example", pattern='*.bw')
 
 ## Name of S3 track bucket
-track.dir = "NHP-BG-example"
+track.bucket = "NHP-BG-example"
 
 ## Generate signatures and write the UCSC track hub!
-hubR(track.dir = track.dir, 
+hubR(track.bucket = track.bucket, 
         access.key = "ABC", secret.key = "ABC,
         bigwigs = example.bigwigs, 
         species = "NHP", region="BG", type="Multiome", genome="rhe10",
@@ -20,6 +20,42 @@ hubR(track.dir = track.dir,
         email="nelson.johansen@alleninstitute.org")
 
 ## Or if you just want signatures
-hmac.signatures = create.signatures(track.dir = track.dir, secret.key = "ABC", bigwigs = example.bigwigs)
+hmac.signatures = create.signatures(track.bucket = track.bucket, secret.key = "ABC", bigwigs = example.bigwigs)
+```
+
+## Example: Interacting with Amazon S3 via hubR
+```
+library(hubR)
+
+## Track bucket must be exactly the same as above.
+track.bucket = "NHP-BG-example"
+hub.bucket   = "NHP-BG-hub"
+
+## Add your credentials for API access
+setup.aws(access.key="ABC", secret.key="ABC", region="us-west-2")
+
+## Create 2 new buckets on S3 defaulted to "private"
+add.buckets(track.bucket = track.bucket, hub.bucket = hub.bucket)
+
+## Using aws-cli we will update the track bucket to completly private to secure data.
+## aws-cli2 must be installed on the system to run this function, otherwise login and manually modify the bucket.
+update.bucket.permission(track.bucket = track.bucket, access.key = "ABC", secret.key="ABC")
+
+## Now lets fill the track bucket with bigwig files!
+fill.track.bucket(data.bucket = "/allen/programs/celltypes/workgroups/hct/NelsonJ/hubR_example", bigwigs = example.bigwigs, track.bucket = track.bucket)
+
+## Finally lets add the track hub to the hub bucket!
+fill.hub.bucket()
+
+```
+
+
+## Installing awscli2 for centos7
+```
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+./aws/install -i /usr/bin/aws-cli -b /usr/bin
+
+aws --version
 ```
 
