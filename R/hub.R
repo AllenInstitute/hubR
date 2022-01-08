@@ -34,9 +34,11 @@ hubR = function(track.bucket, access.key, secret.key,
     hmac.encoded = create.signatures(track.bucket, secret.key, bigwigs)
 
     ## Write out the hub file
-    generate.track.hub(output.track.file, 
-                        genome, species, region, type, cluster,
-                        bigwigs, hmac.encoded, pseudo.names, long.labels, colors, email)
+    generate.track.hub(hmac.encoded, 
+                        track.bucket, access.key,
+                        bigwigs, pseudo.names, long.labels, colors,
+                        species, region, type, cluster, genome,
+                        output.track.file, email)
 
 }
 

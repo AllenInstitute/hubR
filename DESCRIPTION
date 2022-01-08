@@ -9,7 +9,7 @@ Authors@R:
 URL: https://github.com/
 Description: Takes a list of bigwig file names, Amazon S3 bucket info and generates a UCSC genome browser track hub along with neccessary hmac signatures.
 License: GPL-3
-Imports: openssl,
+Depends: openssl,
     digest,
     RCurl,
     aws.s3,

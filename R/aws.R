@@ -42,13 +42,13 @@ add.buckets = function(track.bucket, hub.bucket){
 #' @param secret.key Amazon S3 access key ID
 #'
 #' @export
-update.bucket.permission = function(track.bucket, access.key="AKIAXEERKKJCONE3EJVO", secret.key="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"){
+set.bucket.permissions = function(track.bucket, access.key="AKIAXEERKKJCONE3EJVO", secret.key="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"){
     ## Configure AWS CLI
     system(paste0("aws configure set aws_access_key_id ", access.key))
     system(paste0("aws configure set aws_secret_access_key ", secret.key))
 
     ## Update bucket to be completly private
-    system(paste0("aws s3api put-public-access-block --bucket ", track.bucket, ' --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true'))
+    system(paste0("aws s3api put-public-access-block --bucket ", tolower(track.bucket), ' --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true'))
 }
 
 #' Populate track bucket with bigwigs
@@ -62,7 +62,7 @@ update.bucket.permission = function(track.bucket, access.key="AKIAXEERKKJCONE3EJ
 #' @export
 fill.track.bucket = function(data.dir, bigwigs, track.bucket){
     for(bw in bigwigs){
-        put_object(file=file.path(data.dir, bw), object=bw, bucket=track.bucket)
+        put_object(file=file.path(data.dir, bw), object=bw, bucket=tolower(track.bucket), multipart=TRUE)
     }
 }
 
@@ -76,6 +76,6 @@ fill.track.bucket = function(data.dir, bigwigs, track.bucket){
 #'
 #' @export
 fill.hub.bucket = function(data.dir, hub.file, hub.bucket){
-    put_object(file=file.path(data.dir, hub.file), object=hub.file, bucket=hub.bucket, acl="public-read")
+    put_object(file=file.path(data.dir, hub.file), object=hub.file, bucket=tolower(hub.bucket), acl="public-read")
 }
 
