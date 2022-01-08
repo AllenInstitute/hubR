@@ -16,7 +16,7 @@ library(hubR)
 example.bigwigs = list.files("/allen/programs/celltypes/workgroups/hct/NelsonJ/hubR_example", pattern='*.bw')
 
 ## Name of S3 track bucket
-track.bucket = "NHP-BG-example"
+track.bucket = "nhp-bg-example"
 
 ## Generate signatures and write the UCSC track hub!
 hubR(track.bucket = track.bucket, 
@@ -31,12 +31,13 @@ hmac.signatures = create.signatures(track.bucket = track.bucket, secret.key = "A
 ```
 
 ## Example: Interacting with Amazon S3 via hubR
+### Please set your own AWS credentials
 ```
 library(hubR)
 
 ## Track bucket must be exactly the same as above.
-track.bucket = "NHP-BG-example"
-hub.bucket   = "NHP-BG-hub"
+track.bucket = "nhp-bg-example"
+hub.bucket   = "nhp-bg-hub"
 
 ## Add your credentials for API access
 setup.aws(access.key = "ABC", secret.key = "ABC", region="us-west-2")
