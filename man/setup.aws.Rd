@@ -4,11 +4,7 @@
 \alias{setup.aws}
 \title{Setup aws.s3}
 \usage{
-setup.aws(
-  access.key = "AKIAXEERKKJCONE3EJVO",
-  secret.key = "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",
-  region = "us-west-2"
-)
+setup.aws(access.key, secret.key, region = "us-west-2")
 }
 \arguments{
 \item{access.key}{Amazon S3 access key ID}

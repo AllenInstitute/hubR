@@ -4,11 +4,7 @@
 \alias{set.bucket.permissions}
 \title{Update bucket permission}
 \usage{
-set.bucket.permissions(
-  track.bucket,
-  access.key = "AKIAXEERKKJCONE3EJVO",
-  secret.key = "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"
-)
+set.bucket.permissions(track.bucket, access.key, secret.key)
 }
 \arguments{
 \item{track.bucket}{Name of the track bucket on Amazon S3.}

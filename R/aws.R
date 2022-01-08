@@ -7,7 +7,7 @@
 #' @param region Amazon S3 region: default 'us-west-2'
 #'
 #' @export
-setup.aws = function(access.key='AKIAXEERKKJCONE3EJVO', secret.key='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', region="us-west-2"){
+setup.aws = function(access.key, secret.key, region="us-west-2"){
     Sys.setenv("AWS_ACCESS_KEY_ID" = access.key,
                "AWS_SECRET_ACCESS_KEY" = secret.key,
                "AWS_DEFAULT_REGION" = region)
@@ -42,7 +42,7 @@ add.buckets = function(track.bucket, hub.bucket){
 #' @param secret.key Amazon S3 access key ID
 #'
 #' @export
-set.bucket.permissions = function(track.bucket, access.key="AKIAXEERKKJCONE3EJVO", secret.key="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"){
+set.bucket.permissions = function(track.bucket, access.key, secret.key){
     ## Configure AWS CLI
     system(paste0("aws configure set aws_access_key_id ", access.key))
     system(paste0("aws configure set aws_secret_access_key ", secret.key))
