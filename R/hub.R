@@ -54,7 +54,7 @@ hubR = function(track.bucket, access.key, secret.key,
 create.signatures = function(track.bucket, secret.key, bigwigs){
     ## URL encode takes the hmac string and converts '=' and other special characters to %-encoded characters
     ## Following original conventions with respect to sha1
-    hmac.encoded = sapply(bigwigs, function(x) URLencode(base64Encode(hmac(secret.key, paste0("GET\n\n\n2147483647\n/", track.bucket, "-tracks/", x), "sha1", raw=TRUE)), reserved=TRUE))
+    hmac.encoded = sapply(bigwigs, function(x) URLencode(base64Encode(hmac(secret.key, paste0("GET\n\n\n2147483647\n/", track.bucket, "/", x), "sha1", raw=TRUE)), reserved=TRUE))
     return(hmac.encoded)
 }
 
@@ -123,7 +123,7 @@ generate.track.hub = function(hmac.encoded,
     ## Track writing
     for(bw.itr in 1:length(bigwigs)){
         writeLines(paste0("\ttrack ", pseudo.names[bw.itr]), fileConnection)
-        writeLines(paste0("\tbigDataUrl https://s3-us-west-2.amazonaws.com/", track.bucket, "-tracks/", bigwigs[bw.itr], "?AWSAccessKeyId=", access.key, "&Expires=2147483647&Signature=", hmac.encoded[bw.itr]), fileConnection)
+        writeLines(paste0("\tbigDataUrl https://s3-us-west-2.amazonaws.com/", track.bucket, "/", bigwigs[bw.itr], "?AWSAccessKeyId=", access.key, "&Expires=2147483647&Signature=", hmac.encoded[bw.itr]), fileConnection)
         writeLines(paste0("\tparent ", species, region, type, cluster), fileConnection)
         writeLines(paste0("\tshortLabel ", pseudo.names[bw.itr]), fileConnection)
         writeLines(paste0("\tlongLabel ", long.labels[bw.itr]), fileConnection)
