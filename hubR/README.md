@@ -16,13 +16,13 @@ library(hubR)
 example.bigwigs = list.files("/allen/programs/celltypes/workgroups/hct/NelsonJ/hubR_example", pattern='*.bw')
 
 ## Name of S3 track bucket
-track.bucket = "nhp-bg-example"
+track.bucket = "nhp-bg-example-track"
 
 ## Generate signatures and write the UCSC track hub!
 hubR(track.bucket = track.bucket, 
         access.key = "ABC", secret.key = "ABC",
         bigwigs = example.bigwigs, 
-        species = "NHP", region="BG", type="Multiome", cluster="Subclass", genome="rhe10",
+        species = "NHP", region="BG", type="Multiome", cluster="Subclass", genome="rheMac10",
         output.track.file="/allen/programs/celltypes/workgroups/hct/NelsonJ/hubR_example/trackDB.txt", 
         email="nelson.johansen@alleninstitute.org")
 
@@ -36,7 +36,7 @@ hmac.signatures = create.signatures(track.bucket = track.bucket, secret.key = "A
 library(hubR)
 
 ## Track bucket must be exactly the same as above.
-track.bucket = "nhp-bg-example"
+track.bucket = "nhp-bg-example-track"
 hub.bucket   = "nhp-bg-hub"
 
 ## Add your credentials for API access

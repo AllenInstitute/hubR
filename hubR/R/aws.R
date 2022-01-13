@@ -76,6 +76,6 @@ fill.track.bucket = function(data.dir, bigwigs, track.bucket){
 #'
 #' @export
 fill.hub.bucket = function(data.dir, hub.file, hub.bucket){
-    put_object(file=file.path(data.dir, hub.file), object=hub.file, bucket=tolower(hub.bucket), acl="public-read")
+    put_object(file=file.path(data.dir, hub.file), object=hub.file, bucket=tolower(hub.bucket), acl="public-read", multipart=TRUE)
 }
 
