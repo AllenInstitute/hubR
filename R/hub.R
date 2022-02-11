@@ -30,6 +30,9 @@ hubR = function(track.bucket, access.key, secret.key,
     long.labels  = .argcheck.long.labels(long.labels, bigwigs)
     colors       = .argcheck.colors(colors, bigwigs)
 
+    ## Ensure lower case
+    track.bucket = tolower(track.bucket)
+
     ## Compute hmac signatures using sha1
     hmac.encoded = create.signatures(track.bucket, secret.key, bigwigs)
 
@@ -53,6 +56,7 @@ hubR = function(track.bucket, access.key, secret.key,
 #' @export
 create.signatures = function(track.bucket, secret.key, bigwigs){
     ## URL encode takes the hmac string and converts '=' and other special characters to %-encoded characters
+    track.bucket = tolower(track.bucket)
     ## Following original conventions with respect to sha1
     hmac.encoded = sapply(bigwigs, function(x) URLencode(base64Encode(hmac(secret.key, paste0("GET\n\n\n2147483647\n/", track.bucket, "/", x), "sha1", raw=TRUE)), reserved=TRUE))
     return(hmac.encoded)
@@ -88,6 +92,9 @@ generate.track.hub = function(hmac.encoded,
                                 species, region, type, cluster, genome,
                                 output.track.file, email){
 
+    ##
+    track.bucket = tolower(track.bucket)
+    
     ## Define some helpful labels
     shortLabel = paste(region, type, sep=" ")
     longLabel  = paste(region, type, cluster, sep=" ")

@@ -4,7 +4,7 @@ A tool to streamline the generate of UCSC browser hubs.
 ## Install
 ```
 ## Either clone this github and build the R package or install via:
-install.packages("/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/hubR/hubR_0.1.tar.gz") ## Could be out-of-date
+install.packages("/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/hubR/hubR_0.0.0.9000.tar.gz") ## Could be out-of-date
 ```
 
 ## Example: Building a track hub
@@ -15,7 +15,7 @@ library(hubR)
 ## Get bigwig file names
 example.bigwigs = list.files("/allen/programs/celltypes/workgroups/hct/NelsonJ/hubR_example", pattern='*.bw')
 
-## Name of S3 track bucket
+## Name of S3 track bucket, must be all lowercase with no special characters besides "-"
 track.bucket = "nhp-bg-example-track"
 
 ## Generate signatures and write the UCSC track hub!
@@ -35,7 +35,7 @@ hmac.signatures = create.signatures(track.bucket = track.bucket, secret.key = "A
 ```
 library(hubR)
 
-## Track bucket must be exactly the same as above.
+## Track bucket must be exactly the same as above AND LOWERCASE!!!
 track.bucket = "nhp-bg-example-track"
 hub.bucket   = "nhp-bg-hub"
 
