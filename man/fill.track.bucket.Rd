@@ -16,3 +16,4 @@ fill.track.bucket(data.dir, bigwigs, track.bucket)
 \description{
 This function takes as input the data directory and file names for the bigwig files and uploads them to the track bucket.
 }
+\keyword{internal}

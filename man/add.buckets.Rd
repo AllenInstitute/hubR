@@ -14,3 +14,4 @@ add.buckets(track.bucket, hub.bucket)
 \description{
 This function creates a track and hub bucket on Amazon S3
 }
+\keyword{internal}

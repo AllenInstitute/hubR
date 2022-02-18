@@ -4,15 +4,12 @@
 \alias{set.bucket.permissions}
 \title{Update bucket permission}
 \usage{
-set.bucket.permissions(track.bucket, access.key, secret.key)
+set.bucket.permissions(track.bucket)
 }
 \arguments{
 \item{track.bucket}{Name of the track bucket on Amazon S3.}
-
-\item{access.key}{Amazon S3 access key ID}
-
-\item{secret.key}{Amazon S3 access key ID}
 }
 \description{
 This function is intended to update the track bucket to be completly private
 }
+\keyword{internal}

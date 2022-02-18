@@ -6,8 +6,7 @@
 \usage{
 hubR(
   track.bucket,
-  access.key,
-  secret.key,
+  hub.bucket,
   bigwigs,
   pseudo.names = NULL,
   long.labels = NULL,
@@ -17,6 +16,7 @@ hubR(
   type,
   cluster,
   genome,
+  data.dir,
   output.track.file = "trackDB.txt",
   email = ""
 )
@@ -24,9 +24,7 @@ hubR(
 \arguments{
 \item{track.bucket}{Amazon S3 bucket name that stores the .bw files}
 
-\item{access.key}{Amazon S3 access key ID}
-
-\item{secret.key}{Amazon S3 secret access key}
+\item{hub.bucket}{Amazon S3 bucket name that stores the track hub .txt file}
 
 \item{bigwigs}{Bigwig file names which exactly match those in 'track.bucket'}
 
@@ -44,11 +42,16 @@ hubR(
 
 \item{cluster}{Cluster label information}
 
-\item{genome}{Genome information}
+\item{genome}{Genome information, must be a valid UCSC genome browser genome.}
+
+\item{data.dir}{Location of the bigwig files and where the trackDB.txt will be saved locally}
 
 \item{output.track.file}{Output track hub filename. Default: trackDB.txt}
 
 \item{email}{Correspondence email}
+}
+\value{
+Hub URL
 }
 \description{
 This function takes in a vector of bigwig file names along associated metadata and Amazon S3 credentials.

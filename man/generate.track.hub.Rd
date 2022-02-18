@@ -7,7 +7,6 @@
 generate.track.hub(
   hmac.encoded,
   track.bucket,
-  access.key,
   bigwigs,
   pseudo.names,
   long.labels,
@@ -25,8 +24,6 @@ generate.track.hub(
 \item{hmac.encoded}{Bigwig file signatures computed with \code{create.signatures}}
 
 \item{track.bucket}{Amazon S3 bucket name that stores the .bw files}
-
-\item{access.key}{Amazon S3 access key ID}
 
 \item{bigwigs}{Bigwig file names which exactly match those in 'track.bucket'}
 
@@ -59,3 +56,4 @@ contains the rownames and the subsequent columns are the sample identifiers.
 Any rows with duplicated row names will be dropped with the first one being
 kepted.
 }
+\keyword{internal}

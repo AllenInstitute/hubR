@@ -34,3 +34,13 @@
     stopifnot(length(colors) == length(bigwigs))
     return(colors)
 }
+
+#' @keywords internal
+.argcheck.bucket.names = function(bucket.name, bad.chars = c("\\~", "\\`", "\\!", "\\@", '\\#', '\\$', '\\%', '\\^', '\\&', '\\*', '\\|', '\\:', '\\;', '\\,', '\\.', "\\|", "\\_")){
+    if(grepl(paste(bad.chars, collapse="|"), bucket.name) | nchar(bucket.name) == 0){
+        print(paste0("Invalid character in: ", bucket.name))
+        stop("Bucket names should be all lower case and only contain '-'")
+    }
+    bucket.name = tolower(bucket.name)
+    return(bucket.name)
+}
