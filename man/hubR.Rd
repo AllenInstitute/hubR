@@ -54,7 +54,6 @@ hubR(
 Hub URL
 }
 \description{
-This function takes in a vector of bigwig file names along associated metadata and Amazon S3 credentials.
-It assumes the user has created an S3 bucket 'track.bucket' where the bigwig files will be accessible on S3.
+This builds the track hub and handles all uploading to AWS S3 buckets as named in track.bucket and hub.bucket.
 Any changes to the bigwig file names or 'track.bucket' will require the regeneration of HMAC signatures and the hub file.
 }

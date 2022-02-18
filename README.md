@@ -7,7 +7,7 @@ A tool to streamline the generate of UCSC browser hubs.
 install.packages("/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/hubR/hubR_0.1.1.tar.gz") ## Could be out-of-date
 ```
 
-## Step 1: Building a track hub
+## Example
 ### Please set your own AWS credentials in setup.aws()
 ```
 library(hubR)
