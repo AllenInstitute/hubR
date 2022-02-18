@@ -13,7 +13,10 @@ install.packages("/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/hubR/hub
 library(hubR)
 
 ## Add your credentials for API access
-setup.aws(access.key = "AKIAXEERKKJCONE3EJVO", secret.key = "TTGhaHb9gbWobMf+x6wcILN5f9CKfdXT1sVqrd1o", region="us-west-2")
+setup.aws(access.key = "ACCESS_KEY", secret.key = "SECRET_KEY", region="us-west-2")
+
+## Setup the awscli-2 command line tool, default is to use Nelson Johansen's install
+setup.awscli(awscli.path = "/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/v2/2.4.9/bin")
 
 ## Generate signatures and write the UCSC track hub! 
 ## data.dir is where the bigwig files are located
