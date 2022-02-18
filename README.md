@@ -8,6 +8,9 @@ install.packages("/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/hubR/hub
 ```
 
 ## Example
+
+The track and hub bucket names must be all lowercase and only contain "-".
+
 ### Please set your own AWS credentials in setup.aws()
 ```
 library(hubR)
