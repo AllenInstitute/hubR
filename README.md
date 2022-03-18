@@ -22,7 +22,7 @@ setup.aws(access.key = "ACCESS_KEY", secret.key = "SECRET_KEY", region="us-west-
 setup.awscli(awscli.path = "/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/v2/2.4.9/bin")
 
 ## Generate signatures and write the UCSC track hub! 
-## data.dir is where the bigwig files are located
+## Also uploads bigwig and hub files to amazon AWS, then returns the hub link for use with UCSC genome browser.
 hubR(track.bucket = "nhp-bg-example-track2", hub.bucket = "nhp-bg-hub2",
         species = "NHP", region="BG", type="Multiome", cluster="Subclass", genome="rheMac10",
         data.dir="/allen/programs/celltypes/workgroups/hct/NelsonJ/hubR_example/",
