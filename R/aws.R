@@ -79,7 +79,7 @@ set.bucket.permissions = function(track.bucket){
 fill.track.bucket = function(data.dir, bigwigs, track.bucket){
 
     ## Get bucket content to not reupload 
-    bucket.df = get_bucket_df("nhp-bg-example-track2")
+    bucket.df = get_bucket_df(track.bucket)
 
     ## Upload bigwigs
     for(bw in bigwigs){
