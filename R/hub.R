@@ -5,7 +5,8 @@
 #'
 #' @param track.bucket Amazon S3 bucket name that stores the .bw files
 #' @param hub.bucket Amazon S3 bucket name that stores the track hub .txt file
-#' @param bigwigs Bigwig file names which exactly match those in 'track.bucket'
+#' @param hub.type Format of the track hub: multiwig or composite
+#' @param bigwigs Either a directory or vector of file names for bigwigs. If a vector, then the order of the vector will define the order of the tracks.
 #' @param pseudo.names  Short labels to give each track. If NULL the function attemps to gather from .bw file name: pseudo.names-*.bw
 #' @param long.labels Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: long.labels-*.bw
 #' @param colors Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.
@@ -21,13 +22,18 @@
 #' @return Hub URL
 #'
 #' @export
-hubR = function(track.bucket, hub.bucket, 
-                bigwigs, pseudo.names=NULL, long.labels=NULL, colors=NULL, 
+hubR = function(track.bucket, hub.bucket, hub.type = "multiwig",
+                bigwigs=NULL, pseudo.names=NULL, long.labels=NULL, colors=NULL, 
                 species, region, type, cluster, genome,
                 data.dir, output.track.file="trackDB.txt", email=""){
 
     ## Get bigwig file names, the order of this vector dictates track orders
-    bigwigs = list.files(data.dir, pattern='*.bw')
+    if(is.null(bigwigs)){
+        bigwigs = list.files(data.dir, pattern='*.bw')
+    }else{
+        ## Check that all supplied bigwig files exist
+        if(all(file.exists(bigwigs)) == FALSE){ stop("Cannot find all bigwigs. Check name/path.")}
+    }
 
     ## Argument checking and generation if not provided
     pseudo.names = .argcheck.pseudo.names(pseudo.names, bigwigs)
@@ -43,6 +49,7 @@ hubR = function(track.bucket, hub.bucket,
     print("-- Step 1: Creating track hub '.txt' file")
     generate.track.hub(hmac.encoded, 
                         track.bucket,
+                        hub.type,
                         bigwigs, pseudo.names, long.labels, colors,
                         species, region, type, cluster, genome,
                         file.path(data.dir, output.track.file), email)
@@ -86,12 +93,53 @@ create.signatures = function(track.bucket, bigwigs){
     return(hmac.encoded)
 }
 
+#' Build the track hub
+#'
+#' This function ..
+#'
+#' @param hmac.encoded Bigwig file signatures computed with `create.signatures`
+#' @param track.bucket Amazon S3 bucket name that stores the .bw files
+#' @param hub.type Hub format: multiwig or composite
+#' @param bigwigs Bigwig file names which exactly match those in 'track.bucket'
+#' @param pseudo.names  Short labels to give each track. If NULL the function attemps to gather from .bw file name: pseudo.names-*.bw
+#' @param long.labels Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: long.labels-*.bw
+#' @param colors Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.
+#' @param species Species information
+#' @param region Brain region information
+#' @param type Data type (ATAC, Multiome, etc.)
+#' @param cluster Cluster label information
+#' @param genome Genome information
+#' @param output.track.file Output track hub filename. Default: trackDB.txt
+#' @param email Correspondence email
+#'
+#' @return A matrix of the infile
+#' @keywords internal
+generate.track.hub = function(hmac.encoded, 
+                                track.bucket,
+                                hub.type,
+                                bigwigs, pseudo.names, long.labels, colors,
+                                species, region, type, cluster, genome,
+                                output.track.file, email){
+    if(hub.type == "multiwig"){
+        generate.multiwig.track.hub(hmac.encoded, 
+                                    track.bucket,
+                                    bigwigs, pseudo.names, long.labels, colors,
+                                    species, region, type, cluster, genome,
+                                    output.track.file, email)
+    }else if(hub.type == "composite"){
+        generate.composite.track.hub(hmac.encoded, 
+                                    track.bucket,
+                                    bigwigs, pseudo.names, long.labels, colors,
+                                    species, region, type, cluster, genome,
+                                    output.track.file, email)
+    }else{
+        stop("Unrecognized hub type should be either: multiwig or composite")
+    }
+}
+
 #' Build multi-wig track hub
 #'
-#' This function loads a file as a matrix. It assumes that the first column
-#' contains the rownames and the subsequent columns are the sample identifiers.
-#' Any rows with duplicated row names will be dropped with the first one being
-#' kepted.
+#' This function ..
 #'
 #' @param hmac.encoded Bigwig file signatures computed with `create.signatures`
 #' @param track.bucket Amazon S3 bucket name that stores the .bw files
@@ -109,11 +157,88 @@ create.signatures = function(track.bucket, bigwigs){
 #'
 #' @return A matrix of the infile
 #' @keywords internal
-generate.track.hub = function(hmac.encoded, 
-                                track.bucket,
-                                bigwigs, pseudo.names, long.labels, colors,
-                                species, region, type, cluster, genome,
-                                output.track.file, email){
+generate.multiwig.track.hub = function(hmac.encoded, 
+                                        track.bucket,
+                                        bigwigs, pseudo.names, long.labels, colors,
+                                        species, region, type, cluster, genome,
+                                        output.track.file, email){
+    
+    ## Define some helpful labels
+    shortLabel = paste(region, type, sep=" ")
+    longLabel  = paste(region, type, cluster, sep=" ")
+
+    ## Open track hub file
+    fileConnection = file(output.track.file, open="w+")
+
+    ## Shub header
+    writeLines(paste0("hub ", species, region, type, " Hub"), fileConnection)
+    writeLines(paste0("shortLabel ", shortLabel, " Hub"), fileConnection)
+    writeLines(paste0("longLabel ", longLabel, " Hub"), fileConnection)
+    writeLines(paste0("useOneFile on"), fileConnection)
+    writeLines(paste0("email ", email), fileConnection)
+    writeLines(paste0(""), fileConnection)
+
+    ## Genome info
+    writeLines(paste0("genome ", genome), fileConnection)
+    writeLines(paste0(""), fileConnection)
+
+    # Multiwig header
+    writeLines(paste0("track ", species, region, type, cluster), fileConnection)
+    writeLines(paste0("container multiWig"), fileConnection)
+    writeLines(paste0("shortLabel ", region, type), fileConnection)
+    writeLines(paste0("longLabel ", region, type, cluster, " tracks"), fileConnection)
+    writeLines(paste0("type bigWig"), fileConnection)
+    writeLines(paste0("aggregate none"), fileConnection)
+    writeLines(paste0("showSubtrackColorOnUi on"), fileConnection)
+    writeLines(paste0("visibility full"), fileConnection)
+    writeLines(paste0("autoScale on"), fileConnection)
+    writeLines(paste0("alwaysZero on"), fileConnection)
+    writeLines(paste0(""), fileConnection)
+
+    ## Track writing
+    for(bw.itr in 1:length(bigwigs)){
+        writeLines(paste0("\ttrack ", pseudo.names[bw.itr]), fileConnection)
+        writeLines(paste0("\tbigDataUrl https://s3-us-west-2.amazonaws.com/", track.bucket, "/", bigwigs[bw.itr], "?AWSAccessKeyId=", Sys.getenv("AWS_ACCESS_KEY_ID"), "&Expires=2147483647&Signature=", hmac.encoded[bw.itr]), fileConnection)
+        writeLines(paste0("\tparent ", species, region, type, cluster), fileConnection)
+        writeLines(paste0("\tshortLabel ", pseudo.names[bw.itr]), fileConnection)
+        writeLines(paste0("\tlongLabel ", long.labels[bw.itr]), fileConnection)
+        writeLines(paste0("\ttype bigWig"), fileConnection)
+        writeLines(paste0("\tvisibility full"), fileConnection)
+        writeLines(paste0("\tautoscale on"), fileConnection)
+        writeLines(paste0("\tcolor ", paste(col2rgb(colors[bw.itr])[,1], collapse=",")), fileConnection)
+        writeLines(paste0("\talwaysZero on"), fileConnection)
+        writeLines(paste0("\tmaxHeightPixels 100:40:8"), fileConnection)
+        writeLines(paste0("\tpriority ", bw.itr), fileConnection)
+        writeLines(paste0(""), fileConnection)
+    }
+    close(fileConnection)
+}
+
+#' Build composite track hub
+#'
+#' This function..
+#'
+#' @param hmac.encoded Bigwig file signatures computed with `create.signatures`
+#' @param track.bucket Amazon S3 bucket name that stores the .bw files
+#' @param bigwigs Bigwig file names which exactly match those in 'track.bucket'
+#' @param pseudo.names  Short labels to give each track. If NULL the function attemps to gather from .bw file name: pseudo.names-*.bw
+#' @param long.labels Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: long.labels-*.bw
+#' @param colors Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.
+#' @param species Species information
+#' @param region Brain region information
+#' @param type Data type (ATAC, Multiome, etc.)
+#' @param cluster Cluster label information
+#' @param genome Genome information
+#' @param output.track.file Output track hub filename. Default: trackDB.txt
+#' @param email Correspondence email
+#'
+#' @return A matrix of the infile
+#' @keywords internal
+generate.composite.track.hub = function(hmac.encoded, 
+                                        track.bucket,
+                                        bigwigs, pseudo.names, long.labels, colors,
+                                        species, region, type, cluster, genome,
+                                        output.track.file, email){
     
     ## Define some helpful labels
     shortLabel = paste(region, type, sep=" ")

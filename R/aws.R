@@ -43,7 +43,7 @@ add.buckets = function(track.bucket, hub.bucket){
     }
 
     ## Add hub bucket (private)
-    if(!bucket_exists(track.bucket)){
+    if(!bucket_exists(hub.bucket)){
         put_bucket(bucket = hub.bucket,
                     region = Sys.getenv("AWS_DEFAULT_REGION"),
                     acl = "private")
