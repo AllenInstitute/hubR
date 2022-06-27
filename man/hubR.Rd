@@ -7,7 +7,8 @@
 hubR(
   track.bucket,
   hub.bucket,
-  bigwigs,
+  hub.type = "multiwig",
+  bigwigs = NULL,
   pseudo.names = NULL,
   long.labels = NULL,
   colors = NULL,
@@ -26,7 +27,9 @@ hubR(
 
 \item{hub.bucket}{Amazon S3 bucket name that stores the track hub .txt file}
 
-\item{bigwigs}{Bigwig file names which exactly match those in 'track.bucket'}
+\item{hub.type}{Format of the track hub: multiwig or composite}
+
+\item{bigwigs}{Either a directory or vector of file names for bigwigs. If a vector, then the order of the vector will define the order of the tracks.}
 
 \item{pseudo.names}{Short labels to give each track. If NULL the function attemps to gather from .bw file name: pseudo.names-*.bw}
 
