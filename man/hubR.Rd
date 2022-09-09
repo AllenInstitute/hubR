@@ -9,17 +9,18 @@ hubR(
   hub.bucket,
   hub.type = "multiwig",
   bigwigs = NULL,
-  pseudo.names = NULL,
-  long.labels = NULL,
+  track.names = NULL,
+  track.labels = NULL,
   colors = NULL,
+  groupby = NULL,
   species,
   region,
   type,
-  cluster,
+  taxonomy,
   genome,
   data.dir,
   output.track.file = "trackDB.txt",
-  email = ""
+  email = "nelson.johansen@alleninstitute.org"
 )
 }
 \arguments{
@@ -31,11 +32,13 @@ hubR(
 
 \item{bigwigs}{Either a directory or vector of file names for bigwigs. If a vector, then the order of the vector will define the order of the tracks.}
 
-\item{pseudo.names}{Short labels to give each track. If NULL the function attemps to gather from .bw file name: pseudo.names-*.bw}
+\item{track.names}{Short labels to give each track. If NULL the function attemps to gather from .bw file name: track.names-*.bw}
 
-\item{long.labels}{Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: long.labels-*.bw}
+\item{track.labels}{Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: track.labels-*.bw}
 
 \item{colors}{Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.}
+
+\item{groupby}{A vector of grouping variables for the bigwigs when building composite or sea-ad tracks.}
 
 \item{species}{Species information}
 
@@ -43,7 +46,7 @@ hubR(
 
 \item{type}{Data type (ATAC, Multiome, etc.)}
 
-\item{cluster}{Cluster label information}
+\item{taxonomy}{Annotation information}
 
 \item{genome}{Genome information, must be a valid UCSC genome browser genome.}
 
@@ -58,5 +61,5 @@ Hub URL
 }
 \description{
 This builds the track hub and handles all uploading to AWS S3 buckets as named in track.bucket and hub.bucket.
-Any changes to the bigwig file names or 'track.bucket' will require the regeneration of HMAC signatures and the hub file.
+Any changes to the bigwig file names or 'track.bucket' will require the regeneration of HMAC signatures and the hub file (rerun hubR).
 }

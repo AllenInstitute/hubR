@@ -4,7 +4,7 @@
 \alias{create.signatures}
 \title{Computes HMAC signatures}
 \usage{
-create.signatures(track.bucket, bigwigs)
+create.signatures(track.bucket, bw.df)
 }
 \arguments{
 \item{track.bucket}{Amazon S3 bucket name that stores the .bw files}

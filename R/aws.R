@@ -17,7 +17,7 @@ setup.aws = function(access.key, secret.key, region="us-west-2"){
 #'
 #' This function adds an awscli2 install to the users PATH
 #'
-#' @param awscli.path directory where awscli2 was installed
+#' @param awscli.path directory where awscli2 was installed, defaults to Nelson Johansens install
 #'
 #' @export
 setup.awscli = function(awscli.path = "/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/v2/2.4.9/bin"){

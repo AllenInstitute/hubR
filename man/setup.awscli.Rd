@@ -9,7 +9,7 @@ setup.awscli(
 )
 }
 \arguments{
-\item{awscli.path}{directory where awscli2 was installed}
+\item{awscli.path}{directory where awscli2 was installed, defaults to Nelson Johansens install}
 }
 \description{
 This function adds an awscli2 install to the users PATH

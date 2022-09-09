@@ -13,7 +13,8 @@ Depends: openssl,
     digest,
     RCurl,
     aws.s3,
-    RColorBrewer
+    RColorBrewer,
+    dplyr
 Suggests: knitr, 
     rmarkdown, 
     testthat

@@ -1,21 +1,21 @@
 #' @keywords internal
-.argcheck.pseudo.names = function(pseudo.names, bigwigs){
+.argcheck.track.names = function(track.names, bigwigs){
     ##
-    if(is.null(pseudo.names)){
-        pseudo.names = unlist(lapply(strsplit(bigwigs, "-"), "[[", 1))
+    if(is.null(track.names)){
+        track.names = unlist(lapply(strsplit(bigwigs, "-"), "[[", 1))
     }
-    stopifnot(length(pseudo.names) == length(bigwigs))
-    return(pseudo.names)
+    stopifnot(length(track.names) == length(bigwigs))
+    return(track.names)
 }
 
 #' @keywords internal
-.argcheck.long.labels = function(long.labels, bigwigs){
+.argcheck.track.labels = function(track.labels, bigwigs){
     ##
-    if(is.null(long.labels)){
-        long.labels = unlist(lapply(strsplit(bigwigs, "-"), "[[", 1))
+    if(is.null(track.labels)){
+        track.labels = unlist(lapply(strsplit(bigwigs, "-"), "[[", 1))
     }
-    stopifnot(length(long.labels) == length(bigwigs))
-    return(long.labels)
+    stopifnot(length(track.labels) == length(bigwigs))
+    return(track.labels)
 }
 
 #' @keywords internal
@@ -28,7 +28,7 @@
             colors = pal.colors[1:length(bigwigs)]
         }else{
             print("WARNING -- To many tracks, reusing colors. Consider supplying your own color vector.")
-            colors = sample(pal.colors, length(bigwigs))
+            colors = sample(pal.colors, length(bigwigs), replace=TRUE)
         }
     }
     stopifnot(length(colors) == length(bigwigs))
