@@ -23,11 +23,16 @@ setup.awscli(awscli.path = "/allen/programs/celltypes/workgroups/hct/NelsonJ/Hom
 
 ## Generate signatures and write the UCSC track hub! 
 ## Also uploads the bigwig and hub files to amazon AWS, then returns the hub link for use with UCSC genome browser.
-hubR(track.bucket = "nhp-bg-example-track2", hub.bucket = "nhp-bg-hub2",
-        species = "NHP", region="BG", type="Multiome", cluster="Subclass", genome="rheMac10",
-        data.dir="/allen/programs/celltypes/workgroups/hct/NelsonJ/hubR_example/",
-        output.track.file="trackDB.txt", 
-        email="nelson.johansen@alleninstitute.org")
+hubR(track.bucket = "nhp-bg-example-track", 
+     hub.bucket = "nhp-bg-hub",
+     species = "NHP", 
+     region="BG", 
+     type="Multiome", 
+     cluster="Subclass", 
+     genome="rheMac10",
+     data.dir="/allen/programs/celltypes/workgroups/hct/NelsonJ/hubR_example/",
+     output.track.file="trackDB.txt", 
+     email="nelson.johansen@alleninstitute.org")
 ```
 
 ## Installing awscli2 for centos7
