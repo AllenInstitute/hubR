@@ -36,10 +36,10 @@ generate.multiwig.track.hub = function(track.bucket,
     writeLines(paste0(""), fileConnection)
 
     # Multiwig header
-    writeLines(paste0("track ", species, anno.df$region, anno.df$type, anno.df$taxonomy), fileConnection)
+    writeLines(paste0("track ", anno.df$species, anno.df$region, anno.df$type, anno.df$taxonomy), fileConnection)
     writeLines(paste0("container multiWig"), fileConnection)
     writeLines(paste0("shortLabel ", anno.df$region, anno.df$type), fileConnection)
-    writeLines(paste0("longLabel ", anno.df$region, anno.df$type, taxonomy, " tracks"), fileConnection)
+    writeLines(paste0("longLabel ", anno.df$region, anno.df$type, anno.df$taxonomy, " tracks"), fileConnection)
     writeLines(paste0("type bigWig"), fileConnection)
     writeLines(paste0("aggregate none"), fileConnection)
     writeLines(paste0("showSubtrackColorOnUi on"), fileConnection)

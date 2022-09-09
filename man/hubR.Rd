@@ -7,18 +7,18 @@
 hubR(
   track.bucket,
   hub.bucket,
-  hub.type = "multiwig",
-  bigwigs = NULL,
-  track.names = NULL,
-  track.labels = NULL,
-  colors = NULL,
-  groupby = NULL,
+  data.dir,
   species,
   region,
   type,
   taxonomy,
   genome,
-  data.dir,
+  bigwigs = NULL,
+  track.names = NULL,
+  track.labels = NULL,
+  colors = NULL,
+  groupby = NULL,
+  hub.type = "multiwig",
   output.track.file = "trackDB.txt",
   email = "nelson.johansen@alleninstitute.org"
 )
@@ -28,17 +28,7 @@ hubR(
 
 \item{hub.bucket}{Amazon S3 bucket name that stores the track hub .txt file}
 
-\item{hub.type}{Format of the track hub: multiwig or composite}
-
-\item{bigwigs}{Either a directory or vector of file names for bigwigs. If a vector, then the order of the vector will define the order of the tracks.}
-
-\item{track.names}{Short labels to give each track. If NULL the function attemps to gather from .bw file name: track.names-*.bw}
-
-\item{track.labels}{Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: track.labels-*.bw}
-
-\item{colors}{Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.}
-
-\item{groupby}{A vector of grouping variables for the bigwigs when building composite or sea-ad tracks.}
+\item{data.dir}{Location of the bigwig files and where the trackDB.txt will be saved locally}
 
 \item{species}{Species information}
 
@@ -50,7 +40,17 @@ hubR(
 
 \item{genome}{Genome information, must be a valid UCSC genome browser genome.}
 
-\item{data.dir}{Location of the bigwig files and where the trackDB.txt will be saved locally}
+\item{bigwigs}{Either a directory or vector of file names for bigwigs. If a vector, then the order of the vector will define the order of the tracks.}
+
+\item{track.names}{Short labels to give each track. If NULL the function attemps to gather from .bw file name: track.names-*.bw}
+
+\item{track.labels}{Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: track.labels-*.bw}
+
+\item{colors}{Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.}
+
+\item{groupby}{A vector of grouping variables for the bigwigs when building composite or sea-ad tracks.}
+
+\item{hub.type}{Format of the track hub: multiwig or composite}
 
 \item{output.track.file}{Output track hub filename. Default: trackDB.txt}
 

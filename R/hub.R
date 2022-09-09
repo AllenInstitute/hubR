@@ -5,47 +5,42 @@
 #'
 #' @param track.bucket Amazon S3 bucket name that stores the .bw files
 #' @param hub.bucket Amazon S3 bucket name that stores the track hub .txt file
-#' @param hub.type Format of the track hub: multiwig or composite
-#' @param bigwigs Either a directory or vector of file names for bigwigs. If a vector, then the order of the vector will define the order of the tracks.
-#' @param track.names  Short labels to give each track. If NULL the function attemps to gather from .bw file name: track.names-*.bw
-#' @param track.labels Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: track.labels-*.bw
-#' @param colors Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.
-#' @param groupby A vector of grouping variables for the bigwigs when building composite or sea-ad tracks.
+#' @param data.dir Location of the bigwig files and where the trackDB.txt will be saved locally
 #' @param species Species information
 #' @param region Brain region information
 #' @param type Data type (ATAC, Multiome, etc.)
 #' @param taxonomy Annotation information
 #' @param genome Genome information, must be a valid UCSC genome browser genome.
-#' @param data.dir Location of the bigwig files and where the trackDB.txt will be saved locally
+#' @param bigwigs Either a directory or vector of file names for bigwigs. If a vector, then the order of the vector will define the order of the tracks.
+#' @param track.names  Short labels to give each track. If NULL the function attemps to gather from .bw file name: track.names-*.bw
+#' @param track.labels Detailed labels to give each track. If NULL the function attemps to gather from .bw file name: track.labels-*.bw
+#' @param colors Colors (in R, G, B format) to give the tracks. If NULL colors will be auto-generated.
+#' @param groupby A vector of grouping variables for the bigwigs when building composite or sea-ad tracks.
+#' @param hub.type Format of the track hub: multiwig or composite
 #' @param output.track.file Output track hub filename. Default: trackDB.txt
 #' @param email Correspondence email
 #'
 #' @return Hub URL
 #'
 #' @export
-hubR = function(track.bucket, hub.bucket, hub.type = "multiwig",
-                bigwigs=NULL, track.names=NULL, track.labels=NULL, colors=NULL, groupby=NULL,
+hubR = function(track.bucket, hub.bucket, data.dir,
                 species, region, type, taxonomy, genome,
-                data.dir, output.track.file="trackDB.txt", email="nelson.johansen@alleninstitute.org"){
-
-    ## Get bigwig file names, the order of this vector dictates track orders
-    if(is.null(bigwigs)){
-        bigwigs = list.files(data.dir, pattern='*.bw')
-    }else{
-        ## Check that all supplied bigwig files exist
-        if(all(file.exists(bigwigs)) == FALSE){ stop("Cannot find all bigwigs. Check name/path.")}
-    }
+                bigwigs=NULL, track.names=NULL, track.labels=NULL, colors=NULL, groupby=NULL,
+                hub.type = "multiwig", output.track.file="trackDB.txt", email="nelson.johansen@alleninstitute.org"){
 
     ## AWS argument checking
     track.bucket = .argcheck.bucket.names(track.bucket)
     hub.bucket   = .argcheck.bucket.names(hub.bucket)
+
+    ## Bigwig files
+    bigwigs = .argcheck.bigwigs(data.dir, bigwigs)
 
     ## Argument checking and generation if not provided
     bw.df = data.frame(bigwig      = bigwigs,
                        track.name  = .argcheck.track.names(track.names, bigwigs),
                        track.label = .argcheck.track.labels(track.labels, bigwigs),
                        colors      = .argcheck.colors(colors, bigwigs),
-                       groupby     = groupby) ## If groupby is NULL and user selects sea-ad template then an error, need to handle.
+                       groupby     = .argcheck.groupby(groupby, bigwigs))
 
     ## Data.frame to hold data level information
     anno.df = data.frame(species  = species, 

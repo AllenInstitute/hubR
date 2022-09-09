@@ -36,6 +36,27 @@
 }
 
 #' @keywords internal
+.argcheck.groupby = function(groupby, bigwigs){
+    if(is.null(groupby)){
+        groupby = 1:length(bigwigs)
+    }
+    return(groupby)
+}
+
+#' @keywords internal
+.argcheck.bigwigs = function(data.dir, bigwigs){
+    ## Get bigwig file names, the order of this vector dictates track orders
+    if(is.null(bigwigs)){
+        bigwigs = list.files(data.dir, pattern='*.bw')
+        if(length(bigwigs) == 0){ stop("Cannot find any bigwigs (*.bw) at data directory.") }
+    }else{
+        ## Check that all supplied bigwig files exist
+        if(all(file.exists(bigwigs)) == FALSE){ stop("Cannot find all bigwigs. Check name/path.") }
+    }
+    return(bigwigs)
+}
+
+#' @keywords internal
 .argcheck.bucket.names = function(bucket.name, bad.chars = c("\\~", "\\`", "\\!", "\\@", '\\#', '\\$', '\\%', '\\^', '\\&', '\\*', '\\|', '\\:', '\\;', '\\,', '\\.', "\\|", "\\_")){
     if(grepl(paste(bad.chars, collapse="|"), bucket.name) | nchar(bucket.name) == 0){
         print(paste0("Invalid character in: ", bucket.name))
