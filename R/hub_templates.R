@@ -51,10 +51,10 @@ generate.multiwig.track.hub = function(track.bucket,
     ## Track writing
     for(bw.itr in 1:nrow(bw.df)){
         writeLines(paste0("\ttrack ", bw.df$track.name[bw.itr]), fileConnection)
-        writeLines(paste0("\tbigDataUrl https://s3-us-west-2.amazonaws.com/", track.bucket, "/", bw.df$bigwigs[bw.itr], "?AWSAccessKeyId=", Sys.getenv("AWS_ACCESS_KEY_ID"), "&Expires=2147483647&Signature=", bw.df$hmac.encoded[bw.itr]), fileConnection)
+        writeLines(paste0("\tbigDataUrl https://s3-us-west-2.amazonaws.com/", track.bucket, "/", bw.df$bigwig[bw.itr], "?AWSAccessKeyId=", Sys.getenv("AWS_ACCESS_KEY_ID"), "&Expires=2147483647&Signature=", bw.df$hmac.encoded[bw.itr]), fileConnection)
         writeLines(paste0("\tparent ", anno.df$species, anno.df$region, anno.df$type, anno.df$taxonomy), fileConnection)
-        writeLines(paste0("\tshortLabel ", bw.df$track.names[bw.itr]), fileConnection)
-        writeLines(paste0("\tlongLabel ", bw.df$track.labels[bw.itr]), fileConnection)
+        writeLines(paste0("\tshortLabel ", bw.df$track.name[bw.itr]), fileConnection)
+        writeLines(paste0("\tlongLabel ", bw.df$track.label[bw.itr]), fileConnection)
         writeLines(paste0("\ttype bigWig"), fileConnection)
         writeLines(paste0("\tvisibility full"), fileConnection)
         writeLines(paste0("\tautoscale on"), fileConnection)
@@ -120,10 +120,10 @@ generate.composite.track.hub = function(track.bucket,
 
     # ## Track writing
     # for(bw.itr in 1:length(bigwigs)){
-    #     writeLines(paste0("\ttrack ", track.names[bw.itr]), fileConnection)
+    #     writeLines(paste0("\ttrack ", track.name[bw.itr]), fileConnection)
     #     writeLines(paste0("\tbigDataUrl https://s3-us-west-2.amazonaws.com/", track.bucket, "/", bigwigs[bw.itr], "?AWSAccessKeyId=", Sys.getenv("AWS_ACCESS_KEY_ID"), "&Expires=2147483647&Signature=", hmac.encoded[bw.itr]), fileConnection)
     #     writeLines(paste0("\tparent ", species, bw.df$region, type, taxonomy), fileConnection)
-    #     writeLines(paste0("\tshortLabel ", track.names[bw.itr]), fileConnection)
+    #     writeLines(paste0("\tshortLabel ", track.name[bw.itr]), fileConnection)
     #     writeLines(paste0("\tlongLabel ", track.labels[bw.itr]), fileConnection)
     #     writeLines(paste0("\ttype bigWig"), fileConnection)
     #     writeLines(paste0("\tvisibility full"), fileConnection)

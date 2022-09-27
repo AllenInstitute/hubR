@@ -1,6 +1,6 @@
 Package: hubR
 Title: Build UCSC track hubs
-Version: 0.1.5
+Version: 0.2.0
 Authors@R: 
     person(given = "Nelson",
            family = "Johansen",
