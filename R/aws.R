@@ -77,17 +77,13 @@ set.bucket.permissions = function(track.bucket){
 #'
 #' @keywords internal
 fill.track.bucket = function(data.dir, bigwigs, track.bucket){
-
-    ## Get bucket content to not reupload 
-    bucket.df = get_bucket_df(track.bucket)
-
     ## Upload bigwigs
     for(bw in bigwigs){
-        if(bw %in% bucket.df$Key == TRUE){
+        if(suppressMessages(object_exists(bw, track.bucket)) == TRUE){
             print(paste0("Skipping: ", bw))
         }else{
             print(paste0("Uploading: ", bw))
-            put_object(file=file.path(data.dir, bw), object=bw, bucket=track.bucket, multipart=TRUE)
+            suppressWarnings(put_object(file=file.path(data.dir, bw), object=bw, bucket=track.bucket, multipart=TRUE))
         }
     }
 }
@@ -104,4 +100,3 @@ fill.track.bucket = function(data.dir, bigwigs, track.bucket){
 fill.hub.bucket = function(data.dir, hub.file, hub.bucket){
     put_object(file=file.path(data.dir, hub.file), object=hub.file, bucket=hub.bucket, acl="public-read", multipart=TRUE)
 }
-

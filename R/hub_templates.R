@@ -192,7 +192,7 @@ generate.sea.ad.track.hub = function(track.bucket,
         writeLines(paste0("aggregate ", aggregate), fileConnection)
         writeLines(paste0("showSubtrackColorOnUi on"), fileConnection)
         writeLines(paste0("visibility full"), fileConnection)
-        writeLines(paste0("autoScale on"), fileConnection)
+        writeLines(paste0("autoScale off"), fileConnection)
         writeLines(paste0("alwaysZero on"), fileConnection)
         writeLines(paste0(""), fileConnection)
 
@@ -207,10 +207,11 @@ generate.sea.ad.track.hub = function(track.bucket,
             writeLines(paste0("\tlongLabel ", anno.bigwigs$track.label[bw.itr]), fileConnection)
             writeLines(paste0("\ttype bigWig"), fileConnection)
             writeLines(paste0("\tvisibility full"), fileConnection)
-            writeLines(paste0("\tautoscale on"), fileConnection)
+            writeLines(paste0("\tautoscale off"), fileConnection)
+            writeLines(paste0("\tviewLimits 0:10"), fileConnection)
             writeLines(paste0("\tcolor ", paste(col2rgb(anno.bigwigs$colors[bw.itr])[,1], collapse=",")), fileConnection)
             writeLines(paste0("\talwaysZero on"), fileConnection)
-            writeLines(paste0("\tmaxHeightPixels 40:40:40"), fileConnection)
+            writeLines(paste0("\tmaxHeightPixels 100:16:8"), fileConnection)
             writeLines(paste0("\tpriority ", priority), fileConnection)
             writeLines(paste0(""), fileConnection)
             priority = priority+1
@@ -218,4 +219,19 @@ generate.sea.ad.track.hub = function(track.bucket,
     }
     close(fileConnection)
 }
+
+# writeLines(paste0("\ttrack ", anno.bigwigs$track.name[bw.itr]), fileConnection)
+# writeLines(paste0("\tbigDataUrl https://s3-us-west-2.amazonaws.com/", track.bucket, "/", anno.bigwigs$bigwig[bw.itr], "?AWSAccessKeyId=", Sys.getenv("AWS_ACCESS_KEY_ID"), "&Expires=2147483647&Signature=", anno.bigwigs$hmac.encoded[bw.itr]), fileConnection)
+# writeLines(paste0("\tparent ", multiwig.id), fileConnection)
+# writeLines(paste0("\tshortLabel ", anno.bigwigs$track.name[bw.itr]), fileConnection)
+# writeLines(paste0("\tlongLabel ", anno.bigwigs$track.label[bw.itr]), fileConnection)
+# writeLines(paste0("\ttype bigWig"), fileConnection)
+# writeLines(paste0("\tvisibility full"), fileConnection)
+# writeLines(paste0("\tautoscale off"), fileConnection)
+# writeLines(paste0("\tviewLimits 0:10"), fileConnection)
+# writeLines(paste0("\tcolor ", paste(col2rgb(anno.bigwigs$colors[bw.itr])[,1], collapse=",")), fileConnection)
+# writeLines(paste0("\talwaysZero on"), fileConnection)
+# writeLines(paste0("\tmaxHeightPixels 100:16:8"), fileConnection)
+# writeLines(paste0("\tpriority ", priority), fileConnection)
+# writeLines(paste0(""), fileConnection)
 

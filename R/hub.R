@@ -61,21 +61,21 @@ hubR = function(track.bucket, hub.bucket, data.dir,
                        file.path(data.dir, output.track.file), email)
 
     ## Create buckets on AWS S3
-    print("-- Step 2: Creating buckets on AWS S3")
-    add.buckets(track.bucket = track.bucket, hub.bucket = hub.bucket)
+    # print("-- Step 2: Creating buckets on AWS S3")
+    # add.buckets(track.bucket = track.bucket, hub.bucket = hub.bucket)
 
     ## Using aws-cli we will update the track bucket to completly private to secure data.
-    tryCatch(set.bucket.permissions(track.bucket = track.bucket),
-        error=function(cond) {
-            message("FAILED TO UPDATE PERMISSIONS")
-            message("LOG INTO AWS S3 AND SET TRACK BUCKET TO PRIVATE")
-        }
-    )
+    # tryCatch(set.bucket.permissions(track.bucket = track.bucket),
+    #     error=function(cond) {
+    #         message("FAILED TO UPDATE PERMISSIONS")
+    #         message("LOG INTO AWS S3 AND SET TRACK BUCKET TO PRIVATE")
+    #     }
+    # )
 
     ## Now lets fill the track bucket with bigwig files!
-    print("-- Step 3: Filling buckets on AWS S3")
+    print("-- Step 2: Filling buckets on AWS S3")
     fill.hub.bucket(data.dir = data.dir, hub.file = output.track.file, hub.bucket = hub.bucket)
-    fill.track.bucket(data.dir = data.dir, bigwigs = bw.df$bigwig, track.bucket = track.bucket)
+    fill.track.bucket(data.dir = data.dir, bigwigs = bigwigs, track.bucket = track.bucket)
 
     ## Report the URL
     print("-- Done! ")
