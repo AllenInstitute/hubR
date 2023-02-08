@@ -4,7 +4,7 @@ A tool to streamline the generate of UCSC browser hubs.
 ## Install
 ```
 ## Either clone this github and build the R package or install via:
-install.packages("/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/hubR/hubR_0.2.0.tar.gz") ## Could be out-of-date
+install.packages("/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/hubR/hubR_0.2.1.tar.gz") ## Could be out-of-date
 ```
 
 ## Example
@@ -23,8 +23,8 @@ setup.awscli(awscli.path = "/allen/programs/celltypes/workgroups/hct/NelsonJ/Hom
 
 ## Generate signatures and write the UCSC track hub! 
 ## Also uploads the bigwig and hub files to amazon AWS, then returns the hub link for use with UCSC genome browser.
-hubR(track.bucket = "nhp-bg-example-track-nelson-test2", 
-     hub.bucket = "nhp-bg-hub-nelson-test2",
+hubR(track.bucket = "ucsc-genome-browsers/nhp-bg-example-track-nelson-test", 
+     hub.bucket = "ucsc-genome-browsers/nhp-bg-hub-nelson-test",
      hub.type = "multiwig",
      species = "NHP", 
      region="BG", 
