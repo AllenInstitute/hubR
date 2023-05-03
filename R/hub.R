@@ -76,12 +76,13 @@ hubR = function(track.bucket, hub.bucket, data.dir,
     print("-- Step 2: Filling buckets on AWS S3")
     fill.hub.bucket(data.dir = data.dir, hub.file = output.track.file, hub.bucket = hub.bucket)
     fill.track.bucket(data.dir = data.dir, bigwigs = bigwigs, track.bucket = track.bucket)
+    print("-- Done! ")
 
     ## Report the URL
-    print("-- Done! ")
-    URL = paste0("https://", hub.bucket, ".s3.", Sys.getenv("AWS_DEFAULT_REGION"), ".amazonaws.com/", output.track.file)
+    bucket = strsplit(hub.bucket, "/")[[1]][1] ## Get the bucket
+    object.prefix = paste(strsplit(hub.bucket, "/")[[1]][-1], collapse="/") ## Get the object prefix path
+    URL = paste0("https://", bucket, ".s3.", Sys.getenv("AWS_DEFAULT_REGION"), ".amazonaws.com/", object.prefix, "/", output.track.file)
     print(paste0("Hub link: ", URL))
-
     return(URL)
 }
 
