@@ -1,5 +1,5 @@
 # hubR
-A tool to streamline the generate of UCSC browser hubs.
+A tool to streamline the generate of UCSC browser hubs. Additional details on [confluence](http://confluence.corp.alleninstitute.org/display/BIOIN/hubR).
 
 ## Install
 ```
