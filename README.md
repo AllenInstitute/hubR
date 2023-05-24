@@ -4,7 +4,7 @@ A tool to streamline the generate of UCSC browser hubs. Additional details on [c
 ## Install
 ```
 ## Either clone this github and build the R package or install via:
-install.packages("/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/hubR/hubR_0.2.2.tar.gz") ## Could be out-of-date
+install.packages("/allen/programs/celltypes/workgroups/hct/NelsonJ/Home/hubR/hubR_0.2.2.tar.gz", repos = NULL) ## Could be out-of-date
 ```
 
 ## Example
