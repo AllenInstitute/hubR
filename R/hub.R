@@ -32,6 +32,9 @@ hubR = function(track.bucket, hub.bucket, data.dir,
     track.bucket = .argcheck.bucket.names(track.bucket)
     hub.bucket   = .argcheck.bucket.names(hub.bucket)
 
+    ## This is the bucket name before the object path
+    base.bucket  = strsplit(track.bucket, "/")[[1]][1]
+
     ## Bigwig files
     bigwigs = .argcheck.bigwigs(data.dir, bigwigs)
 
@@ -61,8 +64,8 @@ hubR = function(track.bucket, hub.bucket, data.dir,
                        file.path(data.dir, output.track.file), email)
 
     ## Create buckets on AWS S3
-    # print("-- Step 2: Creating buckets on AWS S3")
-    # add.buckets(track.bucket = track.bucket, hub.bucket = hub.bucket)
+    print("-- Step 2: Creating buckets on AWS S3")
+    add.bucket(bucket = base.bucket)
 
     ## Using aws-cli we will update the track bucket to completly private to secure data.
     # tryCatch(set.bucket.permissions(track.bucket = track.bucket),

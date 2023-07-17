@@ -62,6 +62,6 @@
         print(paste0("Invalid character in: ", bucket.name))
         stop("Bucket names should be all lower case and only contain '-'")
     }
-    bucket.name = tolower(bucket.name)
+    bucket.name = gsub('^\\/|\\/$', '', bucket.name)
     return(bucket.name)
 }

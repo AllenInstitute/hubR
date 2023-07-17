@@ -32,23 +32,14 @@ setup.awscli = function(awscli.path = "/allen/programs/celltypes/workgroups/hct/
 #' @param hub.bucket Name to be given for hub bucket on Amazon S3. (Must be all lower-case)
 #'
 #' @keywords internal
-add.buckets = function(track.bucket, hub.bucket){
+add.bucket = function(bucket){
     ## Add track bucket (private)
-    if(!bucket_exists(track.bucket)){
-        put_bucket(bucket = track.bucket,
+    if(!bucket_exists(bucket)){
+        put_bucket(bucket = bucket,
                     region = Sys.getenv("AWS_DEFAULT_REGION"),
-                    acl = "private")
+                    acl = "private") ## Can no longer set ACL during bucket creation, see AWS site.
     }else{
-        print("Track bucket already exists")
-    }
-
-    ## Add hub bucket (private)
-    if(!bucket_exists(hub.bucket)){
-        put_bucket(bucket = hub.bucket,
-                    region = Sys.getenv("AWS_DEFAULT_REGION"),
-                    acl = "private")
-    }else{
-        print("Hub bucket already exists")
+        print("Bucket already exists")
     }
 }
 
@@ -64,7 +55,7 @@ set.bucket.permissions = function(track.bucket){
     system(paste0("aws configure set aws_access_key_id ", "\"", Sys.getenv("AWS_ACCESS_KEY_ID"), "\""))
     system(paste0("aws configure set aws_secret_access_key ", "\"", Sys.getenv("AWS_SECRET_ACCESS_KEY_ID"), "\""))
     ## Update bucket to be completly private
-    system(paste0("aws s3api put-public-access-block --bucket ", track.bucket, ' --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true'))
+    ## system(paste0("aws s3api put-public-access-block --bucket ", track.bucket, ' --public-access-block-configuration BlockPublicAcls=true, IgnorePublicAcls=true, BlockPublicPolicy=true, RestrictPublicBuckets=true'))
 }
 
 #' Populate track bucket with bigwigs
